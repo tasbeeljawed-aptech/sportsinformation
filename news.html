@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SportsInfo — Latest Sports News</title>
+
+    <!-- Bootstrap + FontAwesome + jQuery + google fonts-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-600: #F7931E;
+            --primary-blue: #004E89;
+            --accent: #1A936F;
+            --card-bg: #fbfbfc;
+            --text-light: #ffffff;
+            --bg: #FBFCFE;
+            --text: #0b1220;
+            --muted: #6b7280;
+            --radius: 14px;
+            --dark-navy: #0B1426;
+            --text-dark: #2C3E50;
+            --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            --gradient-secondary: linear-gradient(135deg, #004E89 0%, #1A936F 100%);
+            --gradient-accent: linear-gradient(135deg, #C5282F 0%, #FF6B35 100%);
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        /* Scrollbar track (background) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            /* scrollbar width */
+        }
+
+        /* Scrollbar thumb (the draggable handle) */
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        /* Thumb on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Scrollbar track area */
+        ::-webkit-scrollbar-track {
+            background: var(--dark-navy);
+        }
+
+        /* Initial hidden state */
+        .page-animate {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+
+        /* Final visible state */
+        .page-animate.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Hidden state */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        /* When visible */
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* BASE */
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #fff, #fbfcff);
+            font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+            color: var(--text);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: 1100px;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(11, 20, 38, 0.95) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--primary);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--text-light) !important;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .navbar-brand .logo-icon {
+            color: var(--primary);
+            margin-right: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            margin: 0 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* HEADER / HERO */
+        .hero {
+            padding: 36px 0 12px;
+            text-align: center;
+        }
+
+        .hero .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            font-family: 'Rajdhani', sans-serif;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: var(--text-dark);
+            display: inline-block;
+            position: relative;
+        }
+
+        .hero .section-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -12px;
+            width: 56%;
+            height: 6px;
+            margin: auto;
+            border-radius: 6px;
+            background: var(--gradient-primary);
+        }
+
+        .hero .subtitle {
+            margin-top: 8px;
+            color: var(--muted);
+        }
+
+        /* SEARCH */
+        .search-wrap {
+            margin: 22px auto 8px;
+            max-width: 700px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 54px 14px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(6, 10, 18, 0.06);
+            box-shadow: 0 8px 26px rgba(4, 12, 32, 0.178);
+            background: #fff;
+            transition: all .28s ease;
+            font-size: 16px;
+        }
+
+        .search-input:hover {
+            box-shadow: 0 14px 40px rgba(4, 12, 32, 0.180);
+        }
+
+        .search-input:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.12);
+            border-color: var(--primary);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all .22s ease;
+            color: var(--muted);
+            font-size: 18px;
+        }
+
+        .search-icon:hover {
+            color: var(--primary);
+            transform: translateY(-50%) scale(1.06);
+            background: rgba(255, 107, 53, 0.04);
+        }
+
+        .search-icon.clicked {
+            animation: pulse .52s cubic-bezier(.2, .9, .3, 1);
+            color: var(--primary);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+            }
+
+            50% {
+                transform: translateY(-50%) scale(1.45);
+            }
+
+            100% {
+                transform: translateY(-50%) scale(1);
+            }
+        }
+
+        /* SPORT TOGGLES row */
+        .toggles-wrap {
+            margin-top: 18px;
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0px 18px 0px;
+            /* ← increased padding */
+            justify-content: space-between;
+            scroll-snap-type: x mandatory;
+            /* optional: smooth snap effect */
+        }
+
+        /* Toggles */
+        .sports-toggles {
+            display: flex;
+            overflow-x: auto;
+            gap: 12px;
+            padding: 15px 0;
+            scrollbar-width: thin;
+        }
+
+        .sports-toggles::-webkit-scrollbar {
+            height: 6px !important;
+        }
+
+        .sports-toggles::-webkit-scrollbar-thumb {
+            background: var(--primary) !important;
+            border-radius: 6px !important;
+        }
+
+        .sport-btn {
+            flex: 0 0 auto;
+            border: none;
+            border-radius: 25px;
+            background: #f1f1f1;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .sport-btn.active,
+        .sport-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 107, 53, 0.3);
+        }
+
+        .clear-btn {
+            background: var(--gradient-secondary);
+            width: 200px;
+            margin-top: 30px;
+            color: #fff !important;
+            border: none;
+        }
+
+        .clear-btn:hover {
+            background: var(--gradient-accent);
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(197, 40, 47, 0.4);
+        }
+
+        .clear-btn i {
+            display: inline-block;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .clear-btn:hover i {
+            transform: rotate(360deg);
+        }
+
+
+
+        /* GRID & CARDS */
+        #news-container {
+            margin-top: 26px;
+        }
+
+        .news-card {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--card-bg);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 12px 40px rgba(6, 12, 26, 0.06);
+            transform: translateZ(0);
+            transition: transform .36s cubic-bezier(.2, .9, .3, 1), box-shadow .36s ease;
+            min-height: 360px;
+        }
+
+        /* ribbon */
+        .news-card .ribbon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 12px;
+            height: 100%;
+            background: var(--primary);
+            transition: width .45s cubic-bezier(.2, .9, .3, 1);
+            z-index: 0;
+        }
+
+        .news-card:hover .ribbon {
+            width: 100%;
+        }
+
+        .news-media {
+            flex: 0 0 200px;
+            overflow: hidden;
+            display: block;
+        }
+
+        .news-media img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform .45s cubic-bezier(.2, .9, .3, 1);
+        }
+
+        .news-card:hover .news-media img {
+            transform: scale(1.08) translateZ(0);
+        }
+
+        .card-body-custom {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 2;
+            position: relative;
+            flex: 1;
+        }
+
+        .sport-label {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: .6px;
+        }
+
+        .news-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text);
+            line-height: 1.16;
+            transition: color .28s ease;
+        }
+
+        .news-desc {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin: 6px 0 0;
+            flex: 1;
+            overflow: hidden;
+            max-height: 72px;
+            transition: color .28s ease;
+        }
+
+        .meta-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        /* Read more aligned */
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: var(--gradient-secondary);
+            color: #fff;
+            font-weight: 800;
+            transition: transform .22s ease, box-shadow .22s ease;
+            margin-top: auto;
+            align-self: flex-start;
+        }
+
+        .read-more:hover {
+            background: var(--gradient-accent);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 34px rgba(255, 107, 53, 0.14);
+        }
+
+        /* on hover - text becomes white */
+        .news-card:hover .news-title,
+        .news-card:hover .news-desc,
+        .news-card:hover .sport-label {
+            color: #fff;
+            z-index: 3;
+            position: relative;
+        }
+
+        /* small 3D tilt subtle */
+        .news-card:hover {
+            transform: translateY(-12px) rotateX(0.8deg);
+            box-shadow: 0 30px 64px rgba(6, 12, 26, 0.14);
+        }
+
+        /* SEE MORE button */
+        .more-wrap {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        .see-more {
+            padding: 12px 28px;
+            border-radius: 999px;
+            border: none;
+            color: #fff;
+            font-weight: 900;
+            cursor: pointer;
+            background: var(--gradient-secondary);
+            box-shadow: 0 12px 34px rgba(4, 14, 40, 0.08);
+            transition: transform .24s ease, box-shadow .24s ease;
+        }
+
+        .see-more:hover {
+            background: var(--gradient-accent);
+            transform: translateY(-6px);
+            box-shadow: 0 30px 64px rgba(4, 14, 40, 0.18);
+        }
+
+        /* status box */
+        .status {
+            max-width: 820px;
+            margin: 12px auto 0;
+            padding: 10px 14px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 700;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.error {
+            background: rgba(197, 40, 47, 0.06);
+            color: #C5282F;
+            border-left: 4px solid #C5282F;
+        }
+
+        .status.info {
+            background: rgba(4, 12, 32, 0.04);
+            color: var(--muted);
+            border-left: 4px solid rgba(6, 10, 18, 0.05);
+        }
+
+        /* small responsive */
+        @media (max-width: 991px) {
+            .news-media img {
+                height: 170px;
+            }
+
+            .news-card {
+                min-height: 320px;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .toggles-wrap {
+                overflow-x: auto;
+                padding: 8px 6px;
+                gap: 8px;
+            }
+
+            .search-wrap {
+                padding: 0 12px;
+            }
+
+            .news-media img {
+                height: 150px;
+            }
+
+            .news-card {
+                min-height: 300px;
+            }
+        }
+
+        /* footer */
+        footer {
+            background: var(--dark-navy);
+            padding: 50px 0;
+            color: #fff;
+        }
+
+        footer h5 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        footer a {
+            color: #fff;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--primary);
+        }
+
+        .social-icons a {
+            color: #fff;
+            margin: 0 12px;
+            font-size: 1.4rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary);
+        }
+
+        /* Scroll Button Styles */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            background: rgb(239, 239, 239);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+        }
+
+        #scrollTopBtn:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.8);
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        /* Visible state */
+        #scrollTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+            animation: arrowIn 0.5s ease forwards;
+        }
+
+        /* Hide with animation */
+        #scrollTopBtn.hide {
+            animation: arrowOut 0.5s ease forwards;
+        }
+
+        /* Arrow Animations */
+        @keyframes arrowIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) rotateX(90deg) scale(0.8);
+            }
+
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) rotateX(-10deg) scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg) scale(1);
+            }
+        }
+
+        @keyframes arrowOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(20px) rotateX(90deg) scale(0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-medal logo-icon"></i>SPORTSINFO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border: 1px solid #FF6B35;">
+                <i class="fas fa-bars" style="color: #FF6B35;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="sports.html">Sports</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="search.html">Search</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="guestbook.html">Guestbook</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav><br><br><br><br>
+
+    <!-- MAIN -->
+    <main class="container page-animate">
+        <section class="hero">
+            <div class="text-center">
+                <h2 class="section-title">
+                    Latest Sports News
+                </h2>
+            </div>
+
+            <div class="subtitle">Real-time headlines — filter by sport or search keywords</div>
+
+            <!-- SEARCH -->
+            <div class="search-wrap scroll-animate">
+                <input id="searchInput" class="search-input"
+                    placeholder="Search news (click icon or press Enter) — e.g. Football, Nadal, Wimbledon..."
+                    autocomplete="off" />
+                <div id="searchBtn" class="search-icon" aria-label="search"><i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+
+            <!-- status -->
+            <div id="status" class="status info"></div>
+
+            <!-- Toggles -->
+            <div class="toggles-wrap" id="toggles">
+                <!-- Buttons generated by JS for cleanliness -->
+
+            </div>
+            <!-- Clear button -->
+            <button id="clearToggle" class="sport-btn clear-btn">
+                <i class="fa-solid fa-rotate-right me-1"></i> Clear Searches
+            </button>
+            </div>
+        </section>
+
+        <!-- GRID -->
+        <section id="news-area">
+            <div id="news-container" class="row g-4"></div>
+
+            <div class="more-wrap">
+                <button id="loadMore" class="see-more"><i
+                        class="fa-sharp-duotone fa-solid fa-arrow-up-right-from-square me-2"></i> Load more
+                    stories</button>
+            </div>
+        </section>
+    </main><br>
+
+    <!-- FOOTER -->
+    <footer class="scroll-animate">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4 mb-4">
+                    <h5>SportsInfo</h5>
+                    <p>Your trusted source for sports insights, history, tournaments, and player stats across the globe.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="index.html">Home</a>
+                    <a href="sports.html">Sports</a>
+                    <a href="search.html">Search</a>
+                    <a href="guestbook.html">Guestbook</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Follow Us</h5>
+                    <div class="social-icons d-flex justify-content-center justify-content-md-start">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+            </div>
+            <hr style="border-color: #fff;">
+            <div class="text-center mt-3">
+                <p>&copy; 2025 Infocom. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- SCRIPTS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        (function ($) {
+            // Config
+            const apiKey = '2872ec55d5394e98adffa093db15b0b2'; // provided key
+            const pageSize = 9;
+            const sportsList = ["Football", "Judo", "Tennis", "Motorcycle Racing", "Volleyball", "Golf", "Chess", "Billiards", "Badminton", "Swimming", "Athletics", "Formula 1", "Cricket", "Esports",];
+
+            // State
+            let page = 1;
+            let currentQuery = 'sports';
+            let isLoading = false;
+
+            // Cache for results to allow client-side prioritization
+            let lastFetchedArticles = [];
+
+            // Elements
+            const $container = $('#news-container');
+            const $status = $('#status');
+            const $searchInput = $('#searchInput');
+            const $searchBtn = $('#searchBtn');
+            const $toggles = $('#toggles');
+            const $loadMore = $('#loadMore');
+
+            // Build toggles
+            function buildToggles() {
+                sportsList.forEach((s, idx) => {
+                    const btn = $(`<button class="sport-btn ${idx === 0 ? 'active' : ''}" data-sport="${s}">${s}</button>`);
+                    $toggles.append(btn);
+                });
+            }
+
+            // show status messages
+            function showStatus(msg, type = 'info', timeout = 4500) {
+                $status.removeClass('error info').addClass(type).text(msg).addClass('show');
+                setTimeout(() => $status.removeClass('show'), timeout);
+            }
+
+            // build card element
+            function buildCard(article, sportLabel) {
+                const col = $('<div class="col-md-4 d-flex"></div>');
+                const card = $(`
+          <article class="news-card scroll-animate">
+            <div class="ribbon"></div>
+            <div class="news-media"><img src="${article.urlToImage || 'https://via.placeholder.com/800x450?text=No+Image'}" alt=""></div>
+            <div class="card-body-custom">
+              <div class="sport-label">${sportLabel || (article.source && article.source.name) || 'General'}</div>
+              <h4 class="news-title">${escapeHtml(article.title || 'Untitled')}</h4>
+              <div class="news-desc">${escapeHtml(article.description || (article.content ? article.content.slice(0, 200) : ''))}</div>
+              <a class="read-more" href="${article.url || '#'}" target="_blank" rel="noopener noreferrer">Read More <i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+          </article>
+        `);
+                col.append(card);
+                return col;
+            }
+
+            // escape text
+            function escapeHtml(s) {
+                return String(s || '').replace(/[&<>"'`=\/]/g, function (ch) {
+                    return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;', '/': '&#x2F;', '`': '&#x60;', '=': '&#x3D;' })[ch];
+                });
+            }
+
+            // fetch news from API (always returns something or an informative message)
+            async function fetchNews(query = 'sports', pageNum = 1, append = false) {
+                if (isLoading) return;
+                isLoading = true;
+                $loadMore.prop('disabled', true);
+
+                // small pulse on icon
+                $searchBtn.addClass('clicked'); setTimeout(() => $searchBtn.removeClass('clicked'), 520);
+
+                // show loading status (only when not appending)
+                if (!append) showStatus('Loading latest stories...', 'info', 6000);
+
+                // build endpoint (we use q and language=en sorted by publishedAt)
+                const endpoint = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=${pageSize}&page=${pageNum}&language=en&sortBy=publishedAt&apiKey=${apiKey}`;
+
+                try {
+                    const res = await fetch(endpoint);
+                    if (!res.ok) throw new Error('Network error: ' + res.status);
+                    const data = await res.json();
+                    if (data.status !== 'ok') throw new Error(data.message || 'API returned error');
+
+                    let articles = data.articles || [];
+
+                    // If user requested a specific sport (not 'sports'), prefer title matches first (client-side)
+                    if (query.toLowerCase() !== 'sports') {
+                        const qLower = query.toLowerCase();
+                        const matched = articles.filter(a => a.title && a.title.toLowerCase().includes(qLower));
+                        if (matched.length > 0) articles = matched.concat(articles.filter(a => !matched.includes(a)));
+                        // if matched is empty, we still use articles (fallback)
+                    }
+
+                    // Save last fetched (for potential client filtering if needed)
+                    if (!append) { lastFetchedArticles = articles.slice(); } else { lastFetchedArticles = lastFetchedArticles.concat(articles); }
+
+                    // render
+                    if (!append) $container.empty();
+                    if (articles.length === 0) {
+                        showStatus('No articles found. Try a different keyword or sport.', 'info', 6000);
+                        // still clear container if new search
+                        if (!append) $container.html('<div class="col-12 text-center text-muted">No news found.</div>');
+                    } else {
+                        // append DOM nodes
+                        const frag = $(document.createDocumentFragment());
+                        articles.forEach((a, idx) => {
+                            const sportLabel = sportsList.find(s => s.toLowerCase() === query.toLowerCase()) || (a.source && a.source.name) || 'General';
+                            const node = buildCard(a, sportLabel);
+                            // small stagger animation
+                            node.find('.news-card').css('animation', `appearUp .48s forwards ${idx * 0.06}s`);
+                            frag.append(node);
+                        });
+                        $container.append(frag);
+                    }
+
+                    $loadMore.prop('disabled', false);
+                } catch (err) {
+                    console.error('fetchNews err', err);
+                    showStatus('Could not load news — ' + (err.message || 'Unknown'), 'error', 8000);
+                    if (!append) $container.html('<div class="col-12 text-center text-danger">Failed to fetch news. Try again later.</div>');
+                    $loadMore.prop('disabled', false);
+                } finally {
+                    isLoading = false;
+                }
+            }
+
+            // initial setup
+            function init() {
+                buildToggles();
+                // initial fetch
+                fetchNews(currentQuery, page, false);
+            }
+
+            // build toggles UI (delegated events)
+            function buildToggles() {
+                $toggles.empty();
+                sportsList.forEach((s, idx) => {
+                    const btn = $(`<button class="sport-btn ${idx === 0 ? 'active' : ''}" data-sport="${s}">${s}</button>`);
+                    $toggles.append(btn);
+                });
+            }
+
+            // events
+            // search by icon
+            $searchBtn.on('click', function () {
+                const q = $searchInput.val().trim();
+                if (!q) {
+                    showStatus('Type something to search (e.g. Football, Nadal).', 'info', 2800);
+                    $searchInput.focus();
+                    return;
+                }
+                currentQuery = q;
+                page = 1;
+                fetchNews(currentQuery, page, false);
+            });
+
+            // enter key
+            $searchInput.on('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    $searchBtn.click();
+                }
+            });
+
+            // toggle click (delegated)
+            $toggles.on('click', '.sport-btn', function () {
+                $('.sport-btn').removeClass('active');
+                $(this).addClass('active');
+                const sport = $(this).data('sport');
+                currentQuery = sport;
+                page = 1;
+                fetchNews(currentQuery, page, false);
+            });
+            // Clear button logic
+            document.getElementById("clearToggle").addEventListener("click", () => {
+                // Remove active highlight from toggles
+                document.querySelectorAll(".sport-btn").forEach(btn => btn.classList.remove("active"));
+
+                // Reset search input
+                document.getElementById("searchInput").value = "";
+
+                // Fetch fresh general sports news
+                fetchNews("Sports", true); // passing true means force fresh load
+            });
+
+
+            // load more
+            $loadMore.on('click', function () {
+                if (isLoading) return;
+                page++;
+                fetchNews(currentQuery, page, true);
+            });
+
+            // init
+            $(document).ready(init);
+
+            // small appear keyframes injection for JS-created nodes
+            $('<style>@keyframes appearUp{from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)}}</style>').appendTo('head');
+
+        })(jQuery);
+
+        const scrollBtn = document.getElementById("scrollTopBtn");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 200) {
+                if (!scrollBtn.classList.contains("show")) {
+                    scrollBtn.classList.add("show");
+                    scrollBtn.classList.remove("hide");
+                }
+            } else {
+                if (scrollBtn.classList.contains("show")) {
+                    scrollBtn.classList.remove("show");
+                    scrollBtn.classList.add("hide");
+                }
+            }
+        });
+
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        // Run when page loads
+        document.addEventListener("DOMContentLoaded", () => {
+            const elements = document.querySelectorAll(".page-animate");
+            elements.forEach((el, i) => {
+                setTimeout(() => {
+                    el.classList.add("show");
+                }, i * 150); // delay for stagger effect
+            });
+        });
+
+        // Scroll observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                }
+            });
+        }, { threshold: 0.2 });
+
+        document.querySelectorAll(".scroll-animate").forEach(el => {
+            observer.observe(el);
+        });
+
+    </script>
+</body>
+
+</html>

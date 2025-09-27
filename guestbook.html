@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SportsInfo — Guestbook</title>
+
+  <!-- Bootstrap + Font Awesome + Google fonts-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ------------------------
+       Theme variables
+       ------------------------ */
+    :root {
+      --primary: #FF6B35;
+      /* orange */
+      --primary-600: #E65C00;
+      --primary-blue: #004E89;
+      /* blue */
+      --accent-green: #1A936F;
+      --accent-red: #C5282F;
+      --bg: #ffffff;
+      --card-bg: #fbfbfc;
+      --muted: #6b7280;
+      --text: #0b1220;
+      --text-light: #ffffff;
+      --radius: 12px;
+      --dark-navy: #0B1426;
+      --light-gray: #F8F9FA;
+      --text-dark: #2C3E50;
+      --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+      --gradient-secondary: linear-gradient(135deg, #004E89 0%, #1A936F 100%);
+      --gradient-accent: linear-gradient(135deg, #C5282F 0%, #FF6B35 100%);
+    }
+
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Scrollbar track (background) */
+    ::-webkit-scrollbar {
+      width: 8px;
+      /* scrollbar width */
+    }
+
+    /* Scrollbar thumb (the draggable handle) */
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-bottom-right-radius: 10px;
+      border-bottom-left-radius: 10px;
+    }
+
+    /* Thumb on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    /* Scrollbar track area */
+    ::-webkit-scrollbar-track {
+      background: var(--dark-navy);
+    }
+
+    /* Initial hidden state */
+    .page-animate {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    /* Final visible state */
+    .page-animate.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Hidden state */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    /* When visible */
+    .scroll-animate.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Navigation */
+    .navbar {
+      background: rgba(11, 20, 38, 0.95) !important;
+      backdrop-filter: blur(15px);
+      border-bottom: 3px solid var(--primary);
+      padding: 1rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand {
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--text-light) !important;
+      text-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+    }
+
+    .navbar-brand .logo-icon {
+      color: var(--primary);
+      margin-right: 10px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
+        transform: translateY(0);
+      }
+
+      40% {
+        transform: translateY(-10px);
+      }
+
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--text-light) !important;
+      font-weight: 600;
+      margin: 0 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--primary) !important;
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -5px;
+      left: 50%;
+      background: var(--gradient-primary);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      width: 100%;
+    }
+
+
+    /* main section */
+
+    .main-container {
+      margin-top: 500px;
+    }
+
+    /* ------------------------
+       Title underline gradient
+       ------------------------ */
+    .section-title {
+      display: inline-block;
+      font-weight: 800;
+      font-family: 'Rajdhani', sans-serif;
+      text-transform: uppercase;
+      color: var(--text-dark);
+      letter-spacing: .4px;
+      position: relative;
+      font-size: 2.5rem;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 72%;
+      height: 6px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-600));
+      opacity: .9;
+    }
+
+    /* ------------------------
+       Form surface (subtle glass)
+       ------------------------ */
+    .form-surface {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 1), rgba(250, 250, 252, 1));
+      border: 1px solid rgba(4, 12, 32, 0.04);
+      border-radius: calc(var(--radius) + 6px);
+      padding: 28px;
+      box-shadow: 0 8px 30px rgba(10, 20, 40, 0.04);
+    }
+
+    /* ------------------------
+       Floating inputs styles
+       ------------------------ */
+    .form-floating>.form-control,
+    .form-floating>textarea {
+      border-radius: 14px;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      background: transparent;
+      padding: 18px 14px;
+      height: auto;
+      color: var(--text);
+    }
+
+    .form-floating>.form-control::placeholder {
+      color: transparent;
+    }
+
+    .form-floating>.form-control:focus,
+    .form-floating>textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.12);
+    }
+
+    .form-floating>label {
+      color: var(--muted);
+      font-weight: 600;
+      transform: translateY(-6px);
+      padding-left: 12px;
+    }
+
+    /* ------------------------
+       Custom inline error component
+       ------------------------ */
+    .field-error {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(197, 38, 38, 0.05), rgba(197, 38, 38, 0.03));
+      border-left: 4px solid var(--accent-red);
+      color: var(--accent-red);
+      font-size: 0.95rem;
+      box-shadow: 0 6px 18px rgba(197, 38, 38, 0.04);
+      transform-origin: left center;
+      opacity: 0;
+      transform: translateY(-6px) scale(.99);
+      transition: transform .22s cubic-bezier(.2, .9, .3, 1), opacity .22s ease;
+      display: none;
+      /* hidden by default */
+    }
+
+    .field-error.show {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .field-error i {
+      margin-top: 2px;
+      font-size: 1.05rem;
+    }
+
+    /* when input invalid, add faint red glow */
+    .is-invalid-input {
+      box-shadow: 0 6px 20px rgba(197, 38, 38, 0.12) !important;
+      border-color: rgba(197, 38, 38, 0.7) !important;
+    }
+
+    /* ------------------------
+       Recommend toggle buttons
+       ------------------------ */
+    .recommend-btns .btn {
+      border-radius: 22px;
+      border: 1px solid rgba(3, 7, 18, 0.06);
+      font-weight: 700;
+      padding: 8px 18px;
+      min-width: 90px;
+      color: var(--primary-blue);
+      background: #fff;
+      transition: all .18s ease;
+    }
+
+    .recommend-btns .btn.active {
+      background: linear-gradient(90deg, var(--primary), var(--primary-600));
+      color: #fff;
+      box-shadow: 0 8px 28px rgba(255, 107, 53, 0.14);
+      transform: translateY(-4px);
+    }
+
+
+    /* Recommend toggle buttons hover */
+    .recommend-btns .btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 20px rgba(0, 78, 137, 0.1);
+      transition: all 0.18s ease;
+    }
+
+    /* Active toggle button already has transform and shadow, keep it */
+    .recommend-btns .btn.active:hover {
+      transform: translateY(-5px) scale(1.06);
+      box-shadow: 0 10px 28px rgba(255, 107, 53, 0.18);
+    }
+
+    /* Submit button gradient using your variable */
+    button[type="submit"] {
+      background: var(--gradient-secondary);
+      border-radius: 25px;
+      border: 1px solid transparent;
+      transition: all 0.25s ease;
+      color: #fff;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--gradient-accent);
+      transform: translateY(-3px) scale(1.03);
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(255, 107, 53, 0.18);
+    }
+
+    /* submit icon animation */
+
+    .submit-btn {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-icon {
+      display: inline-block;
+      transition: transform 0.3s ease;
+      will-change: transform, opacity;
+    }
+
+    /* keyframes for flying and returning */
+    @keyframes flyIcon {
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: translate(120px, -40px) rotate(45deg) scale(1.3);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .submit-btn:hover .submit-icon {
+      animation: flyIcon 0.8s ease forwards;
+    }
+
+
+
+
+
+    /* ------------------------
+       Stars rating
+       ------------------------ */
+    .rating-stars i {
+      font-size: 1.35rem;
+      color: #d1d5db;
+      margin-right: 8px;
+      cursor: pointer;
+      transition: transform .12s ease, color .12s ease;
+    }
+
+    .rating-stars i:hover {
+      transform: translateY(-6px) scale(1.06);
+    }
+
+    .rating-stars i.active {
+      color: var(--primary);
+      text-shadow: 0 6px 18px rgba(255, 107, 53, 0.12);
+    }
+
+    /* ------------------------
+       Entry cards (with gradient border ribbon)
+       ------------------------ */
+    .entry-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px 18px;
+      box-shadow: 0 14px 38px rgba(8, 15, 30, 0.08);
+      transition: transform .25s ease, box-shadow .25s ease;
+      border-left: 6px solid var(--primary);
+      /* gradient left border effect */
+    }
+
+    .entry-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 52px rgba(8, 15, 30, 0.12);
+    }
+
+    .entry-card .name {
+      display: inline-block;
+      padding: 4px 12px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-600));
+      color: #fff;
+      font-weight: 700;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    .entry-card .comment {
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.48;
+      margin-bottom: 12px;
+    }
+
+    .entry-card .meta {
+      display: none;
+      /* hide email */
+    }
+
+    .entry-card .rating-stars i {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-right: 4px;
+    }
+
+
+    /* animated appear */
+    /* Card appear from bottom */
+    .appear {
+      animation: appearUp 0.5s cubic-bezier(.2, .9, .3, 1);
+    }
+
+    @keyframes appearUp {
+      0% {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Small helpers */
+    .muted {
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .mt-8 {
+      margin-top: 32px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--dark-navy);
+      padding: 50px 0;
+      color: #fff;
+    }
+
+    footer h5 {
+      color: #fff;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    footer a {
+      color: #fff;
+      display: block;
+      margin-bottom: 8px;
+      transition: color 0.3s;
+    }
+
+    footer a:hover {
+      color: var(--primary);
+    }
+
+    .social-icons a {
+      color: #fff;
+      margin: 0 12px;
+      font-size: 1.4rem;
+      transition: color 0.3s;
+    }
+
+    .social-icons a:hover {
+      color: var(--primary);
+    }
+
+    /* Scroll Button Styles */
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+      background: rgb(239, 239, 239);
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+    }
+
+    #scrollTopBtn:hover {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 25px rgba(255, 107, 53, 0.8);
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    /* Visible state */
+    #scrollTopBtn.show {
+      opacity: 1;
+      visibility: visible;
+      animation: arrowIn 0.5s ease forwards;
+    }
+
+    /* Hide with animation */
+    #scrollTopBtn.hide {
+      animation: arrowOut 0.5s ease forwards;
+    }
+
+    /* Arrow Animations */
+    @keyframes arrowIn {
+      0% {
+        opacity: 0;
+        transform: translateY(20px) rotateX(90deg) scale(0.8);
+      }
+
+      70% {
+        opacity: 1;
+        transform: translateY(-5px) rotateX(-10deg) scale(1.05);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg) scale(1);
+      }
+    }
+
+    @keyframes arrowOut {
+      0% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0deg) scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(20px) rotateX(90deg) scale(0.8);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="fas fa-medal logo-icon"></i>SPORTSINFO
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        style="border: 1px solid #FF6B35;">
+        <i class="fas fa-bars" style="color: #FF6B35;"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="sports.html">Sports</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="search.html">Search</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#">Guestbook</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav><br><br><br>
+
+  <!-- MAIN -->
+  <main class="main-container container my-5 page-animate">
+
+    <!-- Header -->
+    <div class="d-flex align-items-end justify-content-between mb-4">
+      <div>
+        <h2 class="section-title">Guestbook</h2>
+        <div class="muted mt-1">Share your feedback — it helps us improve.</div>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <section class="form-surface scroll-animate">
+      <!-- novalidate prevents browser native validation popups -->
+      <form id="guestbookForm" novalidate autocomplete="off" aria-describedby="formInstructions">
+        <div id="formInstructions" class="visually-hidden">Custom inline validation is used; errors shown below fields.
+        </div>
+
+        <div class="row g-3">
+
+          <!-- Full Name -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input id="name" aria-describedby="nameError" type="text" class="form-control" placeholder="Full name">
+              <label for="name">Full name</label>
+            </div>
+            <div id="nameError" role="status" class="field-error" aria-live="polite">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div><strong>Invalid name</strong>
+                <div class="muted">Name must start with a capital and be at least 4 letters (letters & spaces only).
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input id="email" aria-describedby="emailError" type="email" class="form-control" placeholder="Email">
+              <label for="email">Email</label>
+            </div>
+            <div id="emailError" role="status" class="field-error" aria-live="polite">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div><strong>Invalid email</strong>
+                <div class="muted">Please enter a proper email (for.example_123@domain.com).</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Address (optional) -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <input id="address" type="text" class="form-control" placeholder="Address (optional)">
+              <label for="address">Address (optional)</label>
+            </div>
+          </div>
+
+          <!-- Comment -->
+          <div class="col-md-6">
+            <div class="form-floating">
+              <textarea id="comment" aria-describedby="commentError" class="form-control" placeholder="Your feedback"
+                style="height:120px"></textarea>
+              <label for="comment">Comment</label>
+            </div>
+            <div id="commentError" role="status" class="field-error" aria-live="polite">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div><strong>Too short</strong>
+                <div class="muted">Please write at least 5 characters.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommend (toggle) -->
+          <div class="col-md-6">
+            <div class="mb-2"><strong class="muted">Would you recommend us?</strong></div>
+            <div class="recommend-btns" role="radiogroup" aria-labelledby="recommendLabel">
+              <button type="button" class="btn" data-value="Yes" aria-pressed="false">Yes</button>
+              <button type="button" class="btn" data-value="No" aria-pressed="false">No</button>
+            </div>
+            <div id="recommendError" role="status" class="field-error" aria-live="polite" style="margin-top:12px;">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div><strong>Please choose</strong>
+                <div class="muted">Tap Yes or No.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rating stars -->
+          <div class="col-md-6">
+            <div class="mb-2"><strong class="muted">Rate our site</strong></div>
+            <div class="rating-stars" role="radiogroup" aria-label="Rating">
+              <i class="fa-solid fa-star" data-value="1" role="radio" aria-checked="false" tabindex="0"></i>
+              <i class="fa-solid fa-star" data-value="2" role="radio" aria-checked="false" tabindex="0"></i>
+              <i class="fa-solid fa-star" data-value="3" role="radio" aria-checked="false" tabindex="0"></i>
+              <i class="fa-solid fa-star" data-value="4" role="radio" aria-checked="false" tabindex="0"></i>
+              <i class="fa-solid fa-star" data-value="5" role="radio" aria-checked="false" tabindex="0"></i>
+            </div>
+            <div id="ratingError" role="status" class="field-error" aria-live="polite" style="margin-top:12px;">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div><strong>Rating required</strong>
+                <div class="muted">Select 1–5 stars.</div>
+              </div>
+            </div>
+          </div>
+
+        </div> <!-- /.row -->
+
+        <div class="d-flex justify-content-end mt-4 scroll-animate">
+          <button type="submit" class="btn btn-lg submit-btn">
+            <span class="submit-icon"><i class="fa-solid fa-paper-plane me-2"></i></span> Submit Feedback
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ENTRIES -->
+    <section class="mt-8 scroll-animate">
+      <h3 class="section-title">Visitor Feedback</h3>
+      <div id="entries" class="row gy-4 mt-3">
+        <!-- inserted entries appear here -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="scroll-animate">
+    <div class="container">
+      <div class="row text-center text-md-start">
+        <div class="col-md-4 mb-4">
+          <h5>SportsInfo</h5>
+          <p>Your trusted source for sports insights, history, tournaments, and player stats across the globe.
+          </p>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Quick Links</h5>
+          <a href="index.html">Home</a>
+          <a href="sports.html">Sports</a>
+          <a href="search.html">Search</a>
+          <a href="#">Guestbook</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Follow Us</h5>
+          <div class="social-icons d-flex justify-content-center justify-content-md-start">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+      </div>
+      <hr style="border-color: #fff;">
+      <div class="text-center mt-3">
+        <p>&copy; 2025 Infocom. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollTopBtn" title="Go to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function ($) {
+      const $form = $('#guestbookForm');
+      const $name = $('#name');
+      const $email = $('#email');
+      const $address = $('#address');
+      const $comment = $('#comment');
+      const $entries = $('#entries');
+
+      const $nameError = $('#nameError');
+      const $emailError = $('#emailError');
+      const $commentError = $('#commentError');
+      const $recommendError = $('#recommendError');
+      const $ratingError = $('#ratingError');
+
+      let recommendVal = "";
+      let ratingVal = 0;
+      let submitted = false; // tracks if submit was clicked
+
+      function showError($el, $errEl, message) {
+        $errEl.addClass('show');
+        $el.addClass('is-invalid-input').attr('aria-invalid', 'true');
+      }
+      function hideError($el, $errEl) {
+        $errEl.removeClass('show');
+        $el.removeClass('is-invalid-input').attr('aria-invalid', 'false');
+      }
+
+      function validateName() {
+        if (!submitted) return true;
+        const val = $name.val().trim();
+        const regex = /^[A-Z][a-zA-Z ]{3,}$/;
+        if (!regex.test(val)) {
+          showError($name, $nameError);
+          return false;
+        } else {
+          hideError($name, $nameError);
+          return true;
+        }
+      }
+
+      function validateEmail() {
+        if (!submitted) return true;
+        const val = $email.val().trim();
+        const regex = /^[a-zA-Z0-9._]*@[a-zA-Z0-9]+\.[a-z]{2,4}$/i;
+        if (!regex.test(val)) {
+          showError($email, $emailError);
+          return false;
+        } else {
+          hideError($email, $emailError);
+          return true;
+        }
+      }
+
+      function validateComment() {
+        if (!submitted) return true;
+        const val = $comment.val().trim();
+        if (val.length < 5) {
+          showError($comment, $commentError);
+          return false;
+        } else {
+          hideError($comment, $commentError);
+          return true;
+        }
+      }
+
+      function validateRecommend() {
+        if (!submitted) return true;
+        if (recommendVal !== "Yes" && recommendVal !== "No") {
+          showError($('.recommend-btns'), $recommendError);
+          return false;
+        } else {
+          hideError($('.recommend-btns'), $recommendError);
+          return true;
+        }
+      }
+
+      // Hover effect for stars
+      $('.rating-stars i').on('mouseenter', function () {
+        const hoverVal = Number($(this).data('value'));
+        $('.rating-stars i').each(function () {
+          const val = Number($(this).data('value'));
+          if (val <= hoverVal) {
+            $(this).addClass('active').css('color', getComputedStyle(document.documentElement).getPropertyValue('--primary'));
+          } else {
+            $(this).removeClass('active').css('color', '#d1d5db');
+          }
+        });
+      });
+
+      // Remove hover effect when mouse leaves the star container
+      $('.rating-stars').on('mouseleave', function () {
+        $('.rating-stars i').each(function () {
+          const val = Number($(this).data('value'));
+          if (val <= ratingVal) {
+            $(this).addClass('active').css('color', getComputedStyle(document.documentElement).getPropertyValue('--primary'));
+          } else {
+            $(this).removeClass('active').css('color', '#d1d5db');
+          }
+        });
+      });
+
+      function validateRating() {
+        if (!submitted) return true;
+        if (ratingVal < 1 || ratingVal > 5) {
+          showError($('.rating-stars'), $ratingError);
+          return false;
+        } else {
+          hideError($('.rating-stars'), $ratingError);
+          return true;
+        }
+      }
+
+
+
+
+      // --- UI interactions ---
+
+      $('.recommend-btns .btn').on('click', function () {
+        $('.recommend-btns .btn').removeClass('active').attr('aria-pressed', 'false');
+        $(this).addClass('active').attr('aria-pressed', 'true');
+        recommendVal = $(this).data('value');
+        validateRecommend();
+      });
+
+      $('.rating-stars i').on('click keypress', function (e) {
+        if (e.type === 'keypress' && (e.key !== 'Enter' && e.key !== ' ')) return;
+        ratingVal = Number($(this).data('value'));
+        $('.rating-stars i').each(function () {
+          const val = Number($(this).data('value'));
+          $(this).toggleClass('active', val <= ratingVal).attr('aria-checked', val <= ratingVal ? 'true' : 'false');
+        });
+        validateRating();
+      });
+
+
+
+      // validate **only after submit** but remove error immediately when corrected
+      $name.on('input', validateName);
+      $email.on('input', validateEmail);
+      $comment.on('input', validateComment);
+
+      $form.on('submit', function (ev) {
+        ev.preventDefault();
+        submitted = true;
+
+        const valid = validateName() & validateEmail() & validateComment() & validateRecommend() & validateRating();
+
+        if (!valid) return;
+
+        // --- create entry card (your existing code) ---
+        const card = $(`
+      <div class="col-md-4 appear">
+        <article class="entry-card">
+          <div class="name">${$name.val().trim()}</div>
+          <div class="meta">${$address.val().trim() ? " • " + $address.val().trim() : ""}</div>
+          <div class="comment">${$comment.val().trim()}</div>
+          <div class="mt-3"><strong class="muted">Recommend:</strong> ${recommendVal} • <strong class="muted">Rating:</strong> ${ratingVal} ★</div>
+        </article>
+      </div>
+    `);
+
+        $entries.prepend(card);
+        setTimeout(() => card.find('.entry-card').addClass('appear'), 20);
+
+        // reset
+        $form[0].reset();
+        recommendVal = ""; ratingVal = 0;
+        $('.recommend-btns .btn').removeClass('active').attr('aria-pressed', 'false');
+        $('.rating-stars i').removeClass('active').attr('aria-checked', 'false');
+
+        // hide errors and reset submit tracker
+        hideError($name, $nameError);
+        hideError($email, $emailError);
+        hideError($comment, $commentError);
+        hideError($('.recommend-btns'), $recommendError);
+        hideError($('.rating-stars'), $ratingError);
+        submitted = false;
+      });
+    })(jQuery);
+
+    const scrollBtn = document.getElementById("scrollTopBtn");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 200) {
+        if (!scrollBtn.classList.contains("show")) {
+          scrollBtn.classList.add("show");
+          scrollBtn.classList.remove("hide");
+        }
+      } else {
+        if (scrollBtn.classList.contains("show")) {
+          scrollBtn.classList.remove("show");
+          scrollBtn.classList.add("hide");
+        }
+      }
+    });
+
+    scrollBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // Run when page loads
+    document.addEventListener("DOMContentLoaded", () => {
+      const elements = document.querySelectorAll(".page-animate");
+      elements.forEach((el, i) => {
+        setTimeout(() => {
+          el.classList.add("show");
+        }, i * 150); // delay for stagger effect
+      });
+    });
+
+    // Scroll observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".scroll-animate").forEach(el => {
+      observer.observe(el);
+    });
+
+
+  </script>
+</body>
+
+</html>

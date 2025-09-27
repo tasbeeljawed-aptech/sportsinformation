@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportsInfo - Premier Sports Information Hub</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* CSS Variables for Sporty Theme */
+        :root {
+            --primary: #FF6B35;
+            --primary-blue: #004E89;
+            --accent-green: #1A936F;
+            --accent-red: #C5282F;
+            --dark-navy: #0B1426;
+            --light-gray: #F8F9FA;
+            --text-dark: #2C3E50;
+            --text-light: #ffffff;
+            --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            --gradient-secondary: linear-gradient(135deg, #004E89 0%, #1A936F 100%);
+            --gradient-accent: linear-gradient(135deg, #C5282F 0%, #FF6B35 100%);
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Scrollbar track (background) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            /* scrollbar width */
+        }
+
+        /* Scrollbar thumb (the draggable handle) */
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-bottom-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+
+        /* Thumb on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* Scrollbar track area */
+        ::-webkit-scrollbar-track {
+            background: var(--dark-navy);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Dynamic Background */
+        .dynamic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #004E89 0%, #0B1426 50%, #1A936F 100%);
+            opacity: 0.95;
+        }
+
+        /* Stadium Pattern Overlay */
+        .stadium-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(26, 147, 111, 0.1) 0%, transparent 50%),
+                linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.02) 50%, transparent 55%);
+            animation: patternMove 20s ease-in-out infinite;
+        }
+
+        @keyframes patternMove {
+
+            0%,
+            100% {
+                transform: translateX(0) translateY(0);
+            }
+
+            25% {
+                transform: translateX(-10px) translateY(10px);
+            }
+
+            50% {
+                transform: translateX(10px) translateY(-5px);
+            }
+
+            75% {
+                transform: translateX(-5px) translateY(15px);
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(11, 20, 38, 0.95) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 3px solid var(--primary);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 800;
+            font-size: 2rem;
+            color: var(--text-light) !important;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .navbar-brand .logo-icon {
+            color: var(--primary);
+            margin-right: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .navbar-nav .nav-link {
+            color: var(--text-light) !important;
+            font-weight: 600;
+            margin: 0 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--primary) !important;
+            transform: translateY(-2px);
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--gradient-primary);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="stadium" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23stadium)"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: heroText 1s ease-out;
+        }
+
+        .hero-content .highlight {
+            color: var(--primary);
+            text-shadow: 0 0 30px rgba(255, 107, 53, 0.8);
+        }
+
+        @keyframes heroText {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .sport-cta-btn {
+            background: var(--gradient-primary);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sport-cta-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(255, 107, 53, 0.6);
+        }
+
+        .sport-cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: all 0.6s;
+        }
+
+        .sport-cta-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Page Container */
+        .page-container {
+            min-height: 100vh;
+            padding-top: 100px;
+            transition: all 0.5s ease;
+        }
+
+        .page {
+            display: none;
+            animation: pageSlideIn 0.6s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes pageSlideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Sports Grid */
+        .sports-section {
+            padding: 4rem 0;
+            background: var(--light-gray);
+        }
+
+        .section-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .sport-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .sport-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .sport-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.3);
+            border-color: var(--primary);
+        }
+
+        .sport-card:hover::before {
+            left: 0;
+            opacity: 0.1;
+        }
+
+        .sport-card:hover .sport-content {
+            color: var(--text-dark);
+        }
+
+        .sport-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .sport-card h3 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .sport-card p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .see-more-btn {
+            background: var(--gradient-secondary);
+            border: none;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .see-more-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 78, 137, 0.4);
+            background: var(--gradient-accent);
+        }
+
+        /* Sport Detail Page */
+        .sport-detail-page {
+            background: var(--light-gray);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .sport-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sport-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>');
+            opacity: 0.3;
+        }
+
+        .sport-header h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn {
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+
+            /* Box Shadow for button effect */
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7),
+                0 0 10px rgba(255, 255, 255, 0.25) inset;
+        }
+
+        .back-btn:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            transform: translateY(-6px);
+
+            /* Stronger shadow on hover */
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.85),
+                0 0 14px rgba(255, 255, 255, 0.35) inset;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary);
+        }
+
+        .info-card h4 {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-card h4 i {
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .video-container {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            /* 16:9 aspect ratio */
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Player Cards */
+        .player-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .player-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .player-avatar img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--dark-navy);
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 1.8rem;
+            border: 3px solid var(--primary);
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.1rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.5);
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            border: none;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 2rem;
+        }
+
+        .modal-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 800;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.8rem 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-navy);
+            padding: 50px 0;
+            color: #fff;
+        }
+
+        footer h5 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        footer a {
+            color: #fff;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: var(--primary);
+        }
+
+        .social-icons a {
+            color: #fff;
+            margin: 0 12px;
+            font-size: 1.4rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .sport-header h1 {
+                font-size: 2.8rem;
+            }
+
+            .sport-card {
+                padding: 1.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+
+            .sport-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .sport-cta-btn {
+                padding: 1rem 2rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Scroll Animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Scroll Button Styles */
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 999;
+            background: rgb(239, 239, 239);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+        }
+
+        #scrollTopBtn:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 107, 53, 0.8);
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        /* Visible state */
+        #scrollTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+            animation: arrowIn 0.5s ease forwards;
+        }
+
+        /* Hide with animation */
+        #scrollTopBtn.hide {
+            animation: arrowOut 0.5s ease forwards;
+        }
+
+        /* Arrow Animations */
+        @keyframes arrowIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) rotateX(90deg) scale(0.8);
+            }
+
+            70% {
+                opacity: 1;
+                transform: translateY(-5px) rotateX(-10deg) scale(1.05);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg) scale(1);
+            }
+        }
+
+        @keyframes arrowOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(20px) rotateX(90deg) scale(0.8);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Dynamic Background -->
+    <div class="dynamic-bg"></div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-medal logo-icon"></i>SPORTSINFO
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                style="border: 1px solid #FF6B35;">
+                <i class="fas fa-bars" style="color: #FF6B35;"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="sports.html">Sports</a></li>
+                    <li class="nav-item"><a class="nav-link" href="search.html">Search</a></li>
+                    <li class="nav-item"><a class="nav-link" href="guestbook.html">Guestbook</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Container -->
+    <div class="page-container">
+
+        <!-- Sports Grid Page -->
+        <div id="sports" class="page active">
+            <section class="sports-section">
+                <div class="container">
+                    <h2 class="section-title fade-up">PREMIER SPORTS COLLECTION</h2>
+                    <div class="row" id="sportsGrid">
+                        <!-- Sports cards will be dynamically generated -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Dynamic Sport Detail Pages -->
+        <div id="sportDetail" class="page sport-detail-page">
+            <!-- Content will be dynamically loaded -->
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4 mb-4">
+                    <h5>SportsInfo</h5>
+                    <p>Your trusted source for sports insights, history, tournaments, and player stats across the globe.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <a href="index.html">Home</a>
+                    <a href="sports.html">Sports</a>
+                    <a href="search.html">Search</a>
+                    <a href="guestbook.html">Guestbook</a>
+                    <a href="about.html">About</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Follow Us</h5>
+                    <div class="social-icons d-flex justify-content-center justify-content-md-start">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+            </div>
+            <hr style="border-color: #fff;">
+            <div class="text-center mt-3">
+                <p>&copy; 2025 Infocom. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        // Enhanced Sports Data with Videos and Detailed Information
+        const sportsData = [
+            {
+                name: "Football",
+                icon: "fas fa-light fa-futbol",
+                description: "The world's most popular sport with billions of passionate fans wolrd wide",
+                players: "11 players per team (22 total on field)",
+                board: "FIFA",
+                strategy: "Strategic ball control, tactical formations, and coordinated team movements to score goals while defending your own goal",
+                teamGame: "Yes - Ultimate team sport requiring coordination, communication, and collective strategy",
+                rules: "90-minute match (45 min per half), offside rules, fouls system, yellow/red cards, penalty kicks, and corner kicks",
+                facts: "Invented in England in 1863. The FIFA World Cup is the most prestigious tournament, held every 4 years. Over 4 billion fans worldwide.",
+                records: "Brazil has won 5 World Cups (most). Pelé scored 1,283 career goals. Lionel Messi has 7 Ballon d'Or awards. Cristiano Ronaldo has scored 800+ career goals.",
+                countries: "Played professionally in over 200 countries. Major leagues: Premier League (England), La Liga (Spain), Serie A (Italy), Bundesliga (Germany)",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/Ar4LrKcwh3w?si=pU52hnpwetDkui0Y&amp;start=60" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // FIFA World Cup highlights
+                players_info: [
+                    { image: `<img src="images/messi.jpg">`, name: "Lionel Messi", position: "Forward", country: "Argentina", achievements: "7 Ballon d'Or, World Cup Winner 2022" },
+                    { image: `<img src="images/ronaldo.jpg">`, name: "Cristiano Ronaldo", position: "Forward", country: "Portugal", achievements: "5 Ballon d'Or, 800+ Career Goals" },
+                    { image: `<img src="images/mbappe.jpg">`, name: "Kylian Mbappé", position: "Forward", country: "France", achievements: "World Cup Winner, Golden Boot 2022" }
+                ]
+            },
+            {
+                name: "Basketball",
+                icon: "fas fa-basketball-ball",
+                description: "High-energy sport combining athleticism, strategy, and precision shooting",
+                players: "5 players per team on court (substitutions allowed)",
+                board: "FIBA",
+                strategy: "Fast-paced offense and defense with pick-and-rolls, zone defense, fast breaks, and strategic timeouts",
+                teamGame: "Yes - Requires seamless teamwork, ball movement, and defensive rotations",
+                rules: "4 quarters of 12 minutes (NBA), shot clock (24 seconds), personal fouls limit, three-point line, free throws",
+                facts: "Invented by James Naismith in 1891. NBA is the premier league globally. Olympic sport since 1936 (men), 1976 (women).",
+                records: "Michael Jordan: 6 NBA championships. Kareem Abdul-Jabbar: All-time scoring leader (38,387 points). LeBron James: 4 different teams, 4 championships.",
+                countries: "Most popular in USA, growing rapidly in Europe, Asia, and Africa. Strong leagues in Spain, Greece, Turkey, China",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/CXLM08fZO5o?si=LcdeUp-YC0LuVbFW&amp;start=60" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // NBA highlights
+                players_info: [
+                    { image: `<img src="images/lebron.jpg">`, name: "LeBron James", position: "Forward", country: "USA", achievements: "4 NBA Championships, All-time Scorer" },
+                    { image: `<img src="images/steph.jpg">`, name: "Stephen Curry", position: "Guard", country: "USA", achievements: "4 NBA Championships, 3-Point Record Holder" },
+                    { image: `<img src="images/giannis.jpg">`, name: "Giannis Antetokounmpo", position: "Forward", country: "Greece", achievements: "NBA Champion, 2x MVP" }
+                ]
+            },
+            {
+                name: "Tennis",
+                icon: "fas fa-table-tennis-paddle-ball",
+                description: "Elegant individual sport requiring precision, endurance, and mental toughness",
+                players: "Singles (1 vs 1) or Doubles (2 vs 2)",
+                board: "ITF",
+                strategy: "Court positioning, shot placement, serve strategy, and psychological warfare to outmaneuver opponents",
+                teamGame: "No - Individual sport (except doubles and team competitions like Davis Cup)",
+                rules: "Best of 3 or 5 sets, scoring: 15-30-40-game, deuce system, tiebreaks at 6-6, different surfaces (clay, grass, hard court)",
+                facts: "Modern tennis originated in 1870s England. Wimbledon (1877) is oldest tournament. Four Grand Slams: Wimbledon, US Open, French Open, Australian Open.",
+                records: "Rafael Nadal: 22 Grand Slams. Serena Williams: 23 Grand Slams. Steffi Graf: Golden Slam (1988). Novak Djokovic: 370+ weeks at #1.",
+                countries: "Grand Slams in UK, France, USA, Australia. Strong tennis nations: Spain, Serbia, Switzerland, Russia",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/9fScMWmYO1Y?si=KmDJC3rS1rNHsh0O&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Tennis highlights
+                players_info: [
+                    { image: `<img src="images/rafael.jpg">`, name: "Rafael Nadal", position: "Player", country: "Spain", achievements: "22 Grand Slams, King of Clay" },
+                    { image: `<img src="images/novak.jpg">`, name: "Novak Djokovic", position: "Player", country: "Serbia", achievements: "24 Grand Slams, Most Weeks #1" },
+                    { image: `<img src="images/sarena.jpg">`, name: "Serena Williams", position: "Player", country: "USA", achievements: "23 Grand Slams, Tennis Legend" }
+                ]
+            },
+            {
+                name: "Swimming",
+                icon: "fas fa-swimmer",
+                description: "Full-body aquatic sport showcasing technique, endurance, and speed",
+                players: "Individual events and team relay races",
+                board: "FINA",
+                strategy: "Stroke technique optimization, race pacing, breathing patterns, and tactical race management",
+                teamGame: "Both individual events and team relay competitions",
+                rules: "Four main strokes: freestyle, backstroke, breaststroke, butterfly. Various distances from 50m to 1500m. Strict technique rules for each stroke.",
+                facts: "Part of modern Olympics since 1896. Michael Phelps has 28 Olympic medals (23 gold). Swimming is excellent full-body exercise.",
+                records: "Katie Ledecky: Multiple world records in distance events. Caeleb Dressel: Sprint specialist. Adam Peaty: Breaststroke world record holder.",
+                countries: "Swimming powerhouses: USA, Australia, Great Britain, Hungary, Japan, China",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/WS9VDWihmnA?si=OG-tP7HIryhFC02F&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Olympic swimming highlights
+                players_info: [
+                    { image: `<img src="images/katie.jfif">`, name: "Katie Ledecky", position: "Distance Swimmer", country: "USA", achievements: "7 Olympic Golds, World Record Holder" },
+                    { image: `<img src="images/cealeb.jpg">`, name: "Caeleb Dressel", position: "Sprint Swimmer", country: "USA", achievements: "5 Olympic Golds 2021, World Records" },
+                    { image: `<img src="images/adam.jfif">`, name: "Adam Peaty", position: "Breaststroker", country: "UK", achievements: "Olympic Champion, World Record Holder" }
+                ]
+            },
+            {
+                name: "Golf",
+                icon: "fas fa-golf-ball",
+                description: "Precision sport combining skill, strategy, and mental fortitude",
+                players: "Individual sport (except team competitions)",
+                board: "IGF",
+                strategy: "Course management, club selection, weather analysis, and mental game mastery",
+                teamGame: "No - Individual sport with some team competitions (Ryder Cup, Presidents Cup)",
+                rules: "18 holes, par scoring system, various club restrictions, rules for hazards, penalties for rule violations",
+                facts: "Originated in Scotland in 15th century. Four major championships: Masters, PGA, US Open, Open Championship. Professional tours worldwide.",
+                records: "Tiger Woods: 15 major championships. Jack Nicklaus: 18 majors (record). Annika Sörenstam: 72 LPGA wins. Lowest round: 55 (unofficial).",
+                countries: "Popular worldwide, major tournaments in USA, UK, Ireland, Canada. Growing in Asia and Middle East",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/EHuM7D2S8-4?si=ucEs2axRD4idueXN&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Golf major highlights
+                players_info: [
+                    { image: `<img src="images/tiger.jpg">`, name: "Tiger Woods", position: "Professional", country: "USA", achievements: "15 Major Championships, 82 PGA Wins" },
+                    { image: `<img src="images/rory.jpg">`, name: "Rory McIlroy", position: "Professional", country: "N. Ireland", achievements: "4 Major Championships, World #1" },
+                    { image: `<img src="images/jon.jpg">`, name: "Jon Rahm", position: "Professional", country: "Spain", achievements: "Major Winner, Former World #1" }
+                ]
+            },
+            {
+                name: "Volleyball",
+                icon: "fas fa-volleyball-ball",
+                description: "Dynamic team sport with explosive jumps and lightning-fast rallies",
+                players: "6 players per team on court (indoor), 2 players (beach volleyball)",
+                board: "FIVB",
+                strategy: "Quick attacks, defensive formations, serving strategy, and coordinated team rotations",
+                teamGame: "Yes - Ultimate team coordination sport requiring precise timing and communication",
+                rules: "Best of 5 sets to 25 points (must win by 2), 3 contacts per side, rotation system, libero position",
+                facts: "Invented in 1895 by William Morgan. Olympic sport since 1964. Beach volleyball added in 1996. Over 800 million fans worldwide.",
+                records: "Brazil dominates men's indoor volleyball. USA excels in beach volleyball. Most Olympic golds: Soviet Union/Russia (men), Cuba (women).",
+                countries: "Volleyball powers: Brazil, USA, Russia, Italy, Poland, China, Serbia, Japan",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/NSTlruO0lJI?si=fndEcqVPw5YKcpur&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Volleyball highlights
+                players_info: [
+                    { image: `<img src="images/giba.jpg">`, name: "Giba", position: "Outside Hitter", country: "Brazil", achievements: "Olympic Gold 2004, 2016, World Champion" },
+                    { image: `<img src="images/kerri.jpg">`, name: "Kerri Walsh Jennings", position: "Beach Volleyball", country: "USA", achievements: "3 Olympic Golds, Beach Volleyball Legend" },
+                    { image: `<img src="images/ivan.jpg">`, name: "Ivan Zaytsev", position: "Outside Hitter", country: "Italy", achievements: "Olympic Silver, European Champion" }
+                ]
+            },
+            {
+                name: "Judo",
+                icon: "fas fa-fist-raised",
+                description: "The gentle way - martial art emphasizing technique over brute strength",
+                players: "2 competitors (judoka)",
+                board: "IJF",
+                strategy: "Leverage, timing, and technique mastery. Mental discipline and respect are fundamental",
+                teamGame: "No - Individual martial art with team competitions in major events",
+                rules: "Throws, pins, and submissions. Scoring: Ippon (full point), Waza-ari (half point). Time limits and penalty system.",
+                facts: "Created by Jigoro Kano in 1882 Japan. Olympic sport since 1964 (men), 1992 (women). Philosophy: mutual benefit and welfare.",
+                records: "Teddy Riner (France): 10 World Championships. Japan leads Olympic medal count. Ryoko Tani (Japan): 2 Olympic golds.",
+                countries: "Judo powerhouses: Japan, France, Russia, Brazil, Georgia, Mongolia, Netherlands",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/UfbCwy7-CgQ?si=esQC_IwVq_pY4Ucf&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Judo highlights
+                players_info: [
+                    { image: `<img src="images/teddy.jpg">`, name: "Teddy Riner", position: "Heavyweight", country: "France", achievements: "10 World Championships, 2 Olympic Golds" },
+                    { image: `<img src="images/ryoko.jpg">`, name: "Ryoko Tani", position: "Lightweight", country: "Japan", achievements: "2 Olympic Golds, 7 World Championships" },
+                    { image: `<img src="images/ilias.jpg">`, name: "Ilias Iliadis", position: "Middleweight", country: "Greece", achievements: "Olympic Gold, World Champion" }
+                ]
+            },
+            {
+                name: "Motorcycle Racing",
+                icon: "fas fa-motorcycle",
+                description: "High-speed motorsport combining courage, skill, cutting-edge technology",
+                players: "Individual riders with team support",
+                board: "FIM",
+                strategy: "Racing line optimization, tire management, overtaking tactics, and risk assessment",
+                teamGame: "No - Individual sport with crucial team support for bike setup and strategy",
+                rules: "Various formats: MotoGP (premier class), Moto2, Moto3, Superbike, motocross. Different regulations for each category.",
+                facts: "MotoGP World Championship started in 1949. Isle of Man TT is most dangerous race. Top speeds exceed 350 km/h (220 mph).",
+                records: "Giacomo Agostini: 15 world titles (record). Valentino Rossi: 9 premier class titles. Marc Márquez: 8 world championships.",
+                countries: "Major racing nations: Italy, Spain, UK, USA, Japan, Australia. MotoGP visits 20+ countries annually.",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/BLsG1SneHKc?si=VuhuxwP_8UFkUb0J&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // MotoGP highlights
+                players_info: [
+                    { image: `<img src="images/valentino.jpg">`, name: "Valentino Rossi", position: "Rider", country: "Italy", achievements: "9 World Championships, MotoGP Legend" },
+                    { image: `<img src="images/marc.jpg">`, name: "Marc Márquez", position: "Rider", country: "Spain", achievements: "8 World Championships, 6 MotoGP Titles" },
+                    { image: `<img src="images/jorge.jpg">`, name: "Jorge Lorenzo", position: "Rider", country: "Spain", achievements: "3 MotoGP World Championships" }
+                ]
+            },
+            {
+                name: "Badminton",
+                icon: "fas fa-table-tennis-paddle-ball",
+                description: "Fastest racket sport requiring explosive power and lightning reflexes",
+                players: "Singles (1 vs 1) or Doubles (2 vs 2)",
+                board: "BWF",
+                strategy: "Speed, agility, court coverage, deceptive shots, and endurance management",
+                teamGame: "Both individual and doubles events, plus team competitions",
+                rules: "Rally point system to 21 points, best of 3 games. Service rules, court boundaries, shuttle specifications.",
+                facts: "Evolved from battledore and shuttlecock in India. Olympic sport since 1992. Shuttlecock can exceed 400 km/h (250 mph).",
+                records: "Lin Dan (China): 2 Olympic golds, 'Super Dan'. Carolina Marín (Spain): Olympic champion. China dominates world rankings.",
+                countries: "Badminton strongholds: China, Indonesia, Malaysia, Denmark, Japan, India, South Korea, Thailand",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/iI_-iCJnETk?si=uSGqzRrqSQUDuwC4&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Badminton highlights
+                players_info: [
+                    { image: `<img src="images/lin.jfif">`, name: "Lin Dan", position: "Men's Singles", country: "China", achievements: "2 Olympic Golds, 5 World Championships" },
+                    { image: `<img src="images/carolina.jpg">`, name: "Carolina Marín", position: "Women's Singles", country: "Spain", achievements: "Olympic Gold, 3 World Championships" },
+                    { image: `<img src="images/lee.jfif">`, name: "Lee Chong Wei", position: "Men's Singles", country: "Malaysia", achievements: "3 Olympic Silver, 3 BWF World Championships" }
+                ]
+            },
+            {
+                name: "Billiards",
+                icon: "fas fa-circle",
+                description: "Precision cue sport combining mathematics, physics, and mental strategy",
+                players: "2 players Usually (varies by game type)",
+                board: "WCBS",
+                strategy: "Angle calculation, position play, safety shots, and psychological pressure management",
+                teamGame: "No - Individual cue sport with some team competitions",
+                rules: "Multiple variants: 8-ball, 9-ball, snooker, carom. Each has specific rules for scoring and legal shots.",
+                facts: "Originated in 15th century Europe. World Snooker Championship dates to 1927. Requires extreme precision and concentration.",
+                records: "Ronnie O'Sullivan: 7 world snooker titles, fastest maximum break (5 min 8 sec). Efren Reyes: Greatest pool player ever.",
+                countries: "Major cue sports nations: UK, USA, China, Germany, Philippines, Australia, Thailand",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/K5EoYhP5Zy4?si=akTSEBsZKqGyla7w&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Snooker/Billiards highlights
+                players_info: [
+                    { image: `<img src="images/ronnie.jfif">`, name: "Ronnie O Sullivan", position: "Snooker Player", country: "UK", achievements: "7 World Championships, 1000+ Century Breaks" },
+                    { image: `<img src="images/efren.jpg">`, name: "Efren Reyes", position: "Pool Player", country: "Philippines", achievements: "Greatest Pool Player, World Champion" },
+                    { image: `<img src="images/john.jfif">`, name: "John Higgins", position: "Snooker Player", country: "Scotland", achievements: "4 World Championships, Triple Crown" }
+                ]
+            },
+            {
+                name: "Athletics",
+                icon: "fas fa-running",
+                description: "The purest form of competition - faster, higher, stronger, and more competitive",
+                players: "Individual athletes competing in various track and field events",
+                board: "IAAF",
+                strategy: "Event-specific training, race tactics, technical perfection, and peak performance timing",
+                teamGame: "Individual events with team scoring in major competitions and relays",
+                rules: "Standardized rules for track events, field events, combined events. Strict anti-doping regulations.",
+                facts: "Core of ancient Olympics (776 BC) and modern Olympics (1896). 'Track and Field' encompasses running, jumping, throwing events.",
+                records: "Usain Bolt: 100m (9.58s) and 200m (19.19s) world records. Eliud Kipchoge: First sub-2-hour marathon. Mundo record holders are global celebrities.",
+                countries: "Athletic powers vary by event: Kenya/Ethiopia (distance), Jamaica/USA (sprints), Europe (field events)",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/QiCas_6lcrQ?si=5Va886qn3IYW8rIM&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Athletics world records
+                players_info: [
+                    { image: `<img src="images/usain.jfif">`, name: "Usain Bolt", position: "Sprinter", country: "Jamaica", achievements: "8 Olympic Golds, 100m/200m World Records" },
+                    { image: `<img src="images/eliud.jpg">`, name: "Eliud Kipchoge", position: "Marathon Runner", country: "Kenya", achievements: "2 Olympic Golds, Sub-2-Hour Marathon" },
+                    { image: `<img src="images/ryan.jpg">`, name: "Ryan Crouser", position: "Shot Putter", country: "USA", achievements: "2 Olympic Golds, World Record Holder" }
+                ]
+            },
+            {
+                name: "Chess",
+                icon: "fas fa-chess",
+                description: "The royal game - ultimate mental warfare and strategic thinking challenge ",
+                players: "2 players competing in intellectual combat",
+                board: "FIDE",
+                strategy: "Deep tactical calculation, strategic planning, psychological warfare, and endgame mastery",
+                teamGame: "No - Individual mental sport with team competitions (Chess Olympiad)",
+                rules: "16 pieces per player, checkmate objective, special moves (castling, en passant), time controls, draw conditions.",
+                facts: "Originated in 6th century India as Chaturanga. World Chess Championship since 1886. Magnus Carlsen dominated for decade.",
+                records: "Garry Kasparov: 15-year world champion reign. Magnus Carlsen: Highest rating ever (2882). Judit Polgár: Strongest female player.",
+                countries: "Chess powerhouses: Russia, USA, China, India, Armenia, Azerbaijan, Norway, Ukraine",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/V4JRByK3ywQ?si=VhKAfXvwJwz5JjDI&amp;start=50" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // Chess world championship highlights
+                players_info: [
+                    { image: `<img src="images/magnus.jpg">`, name: "Magnus Carlsen", position: "Grandmaster", country: "Norway", achievements: "5-Time World Champion, Highest Rating Ever" },
+                    { image: `<img src="images/garry.jfif">`, name: "Garry Kasparov", position: "Grandmaster", country: "Russia", achievements: "15-Year World Champion, Chess Legend" },
+                    { image: `<img src="images/ding.jpeg">`, name: "Ding Liren", position: "Grandmaster", country: "China", achievements: "Current World Champion, Chinese Chess Pioneer" }
+                ]
+            },
+            {
+                name: "Formula 1",
+                icon: "fas fa-flag-checkered",
+                description: "The pinnacle of motorsport, combining speed, technology, strategy, and world-class drivers competing on iconic circuits.",
+                players: "20 drivers (2 per team) across 10 teams on the grid",
+                board: "FIA",
+                strategy: "Tyre management, pit stop strategies, aerodynamics, fuel efficiency, and split-second decision-making at speeds over 300 km/h",
+                teamGame: "Yes - While drivers race individually, F1 is heavily team-based with engineers, strategists, and pit crews playing vital roles",
+                rules: "Grand Prix races typically last ~305 km or 2 hours. Points awarded based on finishing position (25 points for 1st). Strict rules on safety, track limits, car specifications, and pit stop procedures.",
+                facts: "Founded in 1950. Widely considered the fastest and most technologically advanced racing series. Viewed by over 400 million fans annually worldwide.",
+                records: "Lewis Hamilton & Michael Schumacher hold 7 World Championships each. Hamilton has the most race wins (103+). Max Verstappen holds the record for most wins in a single season (19 in 2023).",
+                countries: "Races take place across 20+ countries annually: Monaco, Italy, UK, USA, Japan, and more. Iconic tracks include Monza, Silverstone, and Monaco.",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/CmBpJiAtL1s?si=MsGqRaNN7W67ZlSJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`, // F1 highlights
+                players_info: [
+                    { image: `<img src="images/hamilton.jpg">`, name: "Lewis Hamilton", position: "Driver", country: "United Kingdom", achievements: "7-time World Champion, 103+ race wins" },
+                    { image: `<img src="images/verstappen.webp">`, name: "Max Verstappen", position: "Driver", country: "Netherlands", achievements: "3-time World Champion, record 19 wins in a season" },
+                    { image: `<img src="images/schumacher.jpg">`, name: "Michael Schumacher", position: "Driver", country: "Germany", achievements: "7-time World Champion, Ferrari legend" }
+                ]
+            },
+            {
+                name: "Cricket",
+                icon: "fas fa-solid fa-baseball-bat-ball",
+                description: "A bat-and-ball game played between two teams of 11 players, popular across Asia, Australia, & UK with millions of global fans.",
+                players: "11 players per team",
+                board: "ICC",
+                strategy: "Batting partnerships, bowling variations, field placements, and match tactics depending on format (Test, ODI, T20).",
+                teamGame: "Yes - Success depends on coordination between batsmen, bowlers, and fielders.",
+                rules: "Formats include Test (5 days), ODI (50 overs), and T20 (20 overs). Runs scored by hitting the ball and running or reaching the boundary. Out methods include bowled, caught, LBW, run out, etc.",
+                facts: "Originated in England in the 16th century. The ICC Cricket World Cup is held every 4 years. T20 cricket has massively boosted global popularity.",
+                records: "Sachin Tendulkar holds 100 international centuries. Muttiah Muralitharan has 800 Test wickets. Chris Gayle hit the fastest T20 century in 30 balls.",
+                countries: "Massively popular in India, Pakistan, Australia, England, South Africa, Sri Lanka, and New Zealand. Indian Premier League (IPL) is the richest cricket league.",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/pQ5xEiZ-5IE?si=Wn22VTDc5cgu54M5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`,
+                players_info: [
+                    { image: `<img src="images/sachin.webp">`, name: "Sachin Tendulkar", position: "Batsman", country: "India", achievements: "100 international centuries, World Cup Winner 2011" },
+                    { image: `<img src="images/virat.jpg">`, name: "Virat Kohli", position: "Batsman", country: "India", achievements: "75+ international centuries, ICC Player of the Decade 2010s" },
+                    { image: `<img src="images/warne.png">`, name: "Shane Warne", position: "Bowler", country: "Australia", achievements: "700+ Test wickets, one of cricket’s greatest spinners" }
+                ]
+            },
+            {
+                name: "Esports",
+                icon: "fas fa-gamepad",
+                description: "Competitive video gaming played at a professional level across titles like League of Legends, Dota 2, CS:GO, and Fortnite.",
+                players: "Depends on game (1v1, 5v5, squads, or teams).",
+                board: "IESF, WESA, AESF",
+                strategy: "Tactics differ per game — can include map control, resource management, teamwork, and rapid decision-making.",
+                teamGame: "Yes - Most major esports are team-based (League of Legends, Dota 2, CS:GO) requiring deep coordination.",
+                rules: "Each game has its own competitive ruleset, usually played in tournaments with strict guidelines, time limits, and referees.",
+                facts: "Global esports audience exceeds 500 million. Prize pools can exceed $40M (Dota 2’s The International). Esports are recognized as sports in many countries.",
+                records: "N0tail is the highest-earning player with $7M+. Faker is considered the GOAT of League of Legends. Bugha won $3M in Fortnite World Cup 2019.",
+                countries: "Esports are globally popular, with strong presence in South Korea, China, USA, and Europe. Big tournaments include LoL Worlds, The International (Dota 2), and CS:GO Majors.",
+                videoId: `<iframe width="560" height="315" src="https://www.youtube.com/embed/k0AovK7gMiw?si=8vFGUV9rvtefDXjL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`,
+                players_info: [
+                    { image: `<img src="images/arsalan.jpg">`, name: "Arsalan Ash", position: "Tekken Pro", country: "Pakistan", achievements: "Multiple EVO Champion, Tekken World Tour Winner" },
+                    { image: `<img src="images/faker.jpg">`, name: "Faker", position: "Mid Laner", country: "South Korea", achievements: "3x LoL World Champion, considered the best League of Legends player ever" },
+                    { image: `<img src="images/n0tail.jpg">`, name: "N0tail", position: "Captain", country: "Denmark", achievements: "Highest-earning esports player ($7M+), 2x Dota 2 TI Champion" },
+                ]
+            },
+
+
+        ];
+
+        // Page Navigation System
+        let currentPage = 'sports';
+        let currentSport = null;
+
+        // Initialize Website
+        $(document).ready(function () {
+
+            // Generate sports cards
+            generateSportsCards();
+
+            // Setup scroll animations
+            setupScrollAnimations();
+
+            // Setup form handlers
+            setupFormHandlers();
+
+            // Setup search functionality
+            setupSearch();
+        });
+
+        // Initialize website animations and effects
+        function initializeWebsite() {
+            // Trigger scroll animations
+            setTimeout(() => {
+                $('.fade-up').addClass('visible');
+            }, 500);
+
+            // Add navbar scroll effect
+            $(window).scroll(function () {
+                const navbar = $('.navbar');
+                if ($(window).scrollTop() > 100) {
+                    navbar.css('background', 'rgba(11, 20, 38, 0.98)');
+                } else {
+                    navbar.css('background', 'rgba(11, 20, 38, 0.95)');
+                }
+            });
+        }
+
+        // Page navigation system
+        function showPage(pageId, sportName = null) {
+            // Hide all pages
+            $('.page').removeClass('active');
+
+            if (pageId === 'sportDetail' && sportName) {
+                currentSport = sportName;
+                loadSportDetail(sportName);
+            }
+
+            // Show target page
+            $('#' + pageId).addClass('active');
+            currentPage = pageId;
+
+            // Scroll to top
+            $('html, body').animate({ scrollTop: 0 }, 500);
+
+            // Trigger animations for visible elements
+            setTimeout(() => {
+                $('#' + pageId + ' .fade-up').addClass('visible');
+            }, 300);
+        }
+
+        // Generate sports cards
+        function generateSportsCards() {
+            const sportsGrid = $('#sportsGrid');
+
+            sportsData.forEach((sport, index) => {
+                const cardHTML = `
+                    <div class="col-lg-4 col-md-6 mb-4 fade-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="sport-card h-100">
+                            <div class="sport-content text-center">
+                                <i class="${sport.icon} sport-icon"></i>
+                                <h3>${sport.name}</h3>
+                                <p>${sport.description}</p>
+                                <button class="see-more-btn" onclick="showPage('sportDetail', '${sport.name}')">
+                                    <i class="fas fa-info-circle me-2"></i>EXPLORE DETAILS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                sportsGrid.append(cardHTML);
+            });
+        }
+
+        // Load sport detail page
+        function loadSportDetail(sportName) {
+            const sport = sportsData.find(s => s.name === sportName);
+            if (!sport) return;
+
+            const detailHTML = `
+                <div class="sport-header">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-md-8">
+                                <h1><i class="${sport.icon} me-3"></i>${sport.name}</h1>
+                                <p style="font-size: 1.2rem; margin-bottom: 0;">${sport.description}</p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <button class="back-btn" onclick="showPage('sports')">
+                                    <i class="fas fa-arrow-left me-2"></i>BACK TO SPORTS
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="container">
+                    <div class="row">
+                        <!-- Main Information -->
+                        <div class="col-lg-8">
+                            <!-- Video Section -->
+                            <div class="video-container mb-4">
+                                <h4 class="mb-3" style="font-family: 'Rajdhani', sans-serif; font-weight: 700; color: var(--primary-blue);">
+                                    <i class="fas fa-play-circle text-danger me-2"></i>Featured Video
+                                </h4>
+                                <div class="video-wrapper">
+                                    ${sport.videoId}               
+                                </div>
+                            </div>
+                            
+                            <!-- Detailed Information -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-book"></i>Rules & Regulations</h4>
+                                <p>${sport.rules}</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-lightbulb"></i>Fascinating Facts</h4>
+                                <p>${sport.facts}</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-trophy"></i>Records & Achievements</h4>
+                                <p>${sport.records}</p>
+                            </div>
+                            
+                            <div class="info-card">
+                                <h4><i class="fas fa-globe"></i>Global Presence</h4>
+                                <p>${sport.countries}</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Sidebar with Players -->
+                        <div class="col-lg-4">
+                            <div class="info-card">
+                                <h4><i class="fas fa-star"></i>Featured Athletes</h4>
+                                <div class="row">
+                                    ${sport.players_info.map(player => `
+                                        <div class="col-12 mb-3">
+                                            <div class="player-card" onclick="showPlayerDetails('${player.name}', '${sport.name}')">
+                                                <div class="player-avatar">
+                                                    ${player.image}
+                                                </div>
+                                                <h6 style="font-weight: 700; color: var(--primary-blue);">${player.name}</h6>
+                                                <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">${player.position} - ${player.country}</p>
+                                                <p style="font-size: 0.8rem; color: var(--accent-green); font-weight: 600;">${player.achievements}</p>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <!-- Quick Stats -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-chart-bar"></i>Quick Stats</h4>
+                                <div class="stats-list">
+                                    <div class="stat-item d-flex justify-content-between mb-2">
+                                        <span><i class="fas fa-users text-primary me-2"></i>Team Size:</span>
+                                        <strong>${sport.players.split(' ')[0]}</strong>
+                                    </div>
+                                    <div class="stat-item d-flex justify-content-between mb-2">
+                                        <span><i class="fas fa-flag text-success me-2"></i>Global Reach:</span>
+                                        <strong>Worldwide</strong>
+                                    </div>
+                                    <div class="stat-item d-flex justify-content-between mb-2">
+                                        <span><i class="fas fa-medal text-warning me-2"></i>Olympic Sport:</span>
+                                        <strong>Yes</strong>
+                                    </div>
+                                    <div class="stat-item d-flex justify-content-between">
+                                        <span><i class="fas fa-clock text-info me-2"></i>Professional:</span>
+                                        <strong>Yes</strong>
+                                    </div>
+                                    <div class="stat-item d-flex justify-content-between mt-2">
+                                        <span><i class="fas fa-landmark me-2"></i>Official Board:</span>
+                                        <strong>${sport.board}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Related Sports -->
+                            <div class="info-card">
+                                <h4><i class="fas fa-link"></i>Explore More Sports</h4>
+                                ${getRelatedSports(sport.name).map(relatedSport => `
+                                    <button class="btn btn-outline-primary btn-sm mb-2 me-2" 
+                                            onclick="showPage('sportDetail', '${relatedSport.name}')"
+                                            style="border-radius: 15px;">
+                                        <i class="${relatedSport.icon} me-1"></i>${relatedSport.name}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $('#sportDetail').html(detailHTML);
+        }
+
+        // Get related sports for sidebar
+        function getRelatedSports(currentSportName) {
+            return sportsData
+                .filter(sport => sport.name !== currentSportName)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 4);
+        }
+
+        // Show player details
+        function showPlayerDetails(playerName, sportName) {
+            const sport = sportsData.find(s => s.name === sportName);
+            const player = sport.players_info.find(p => p.name === playerName);
+
+            // Create dynamic modal for player details
+            const modalHTML = `
+                <div class="modal fade" id="playerModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">
+                                    <i class="fas fa-user-star me-2"></i>${player.name} - ${sportName} Champion
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <div class="player-avatar mb-3" style="width: 120px; height: 120px; font-size: 3rem; margin: 0 auto;">
+                                            ${player.image}
+                                        </div>
+                                        <h4 style="color: var(--primary-blue);">${player.name}</h4>
+                                        <p class="text-muted">${player.country}</p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6 style="color: var(--primary); font-weight: 700;">Position:</h6>
+                                        <p>${player.position}</p>
+                                        
+                                        <h6 style="color: var(--primary); font-weight: 700;">Nationality:</h6>
+                                        <p>${player.country}</p>
+                                        
+                                        <h6 style="color: var(--primary); font-weight: 700;">Major Achievements:</h6>
+                                        <p>${player.achievements}</p>
+                                        
+                                        <h6 style="color: var(--primary); font-weight: 700;">Career Highlights:</h6>
+                                        <ul>
+                                            <li>World-class performer in ${sportName}</li>
+                                            <li>Inspiration to millions of fans worldwide</li>
+                                            <li>Professional excellence and dedication</li>
+                                            <li>Ambassador for the sport globally</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Remove existing modal if any
+            $('#playerModal').remove();
+
+            // Add modal to body and show
+            $('body').append(modalHTML);
+            $('#playerModal').modal('show');
+
+            // Remove modal after hiding
+            $('#playerModal').on('hidden.bs.modal', function () {
+                $(this).remove();
+            });
+        }
+
+
+        // Setup scroll animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements when they're added to DOM
+            $(document).on('DOMNodeInserted', '.fade-up', function () {
+                observer.observe(this);
+            });
+
+            // Observe existing elements
+            $('.fade-up').each(function () {
+                observer.observe(this);
+            });
+        }
+
+        // Smooth scrolling for internal navigation
+        function smoothScrollTo(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Performance optimization for smooth animations
+        function optimizePerformance() {
+            // Throttle scroll events
+            let scrollTimeout;
+            $(window).on('scroll', function () {
+                if (scrollTimeout) {
+                    clearTimeout(scrollTimeout);
+                }
+                scrollTimeout = setTimeout(function () {
+                    // Scroll-based functionality here
+                }, 10);
+            });
+        }
+
+        // Initialize performance optimizations
+        optimizePerformance();
+
+        const scrollBtn = document.getElementById("scrollTopBtn");
+
+        window.addEventListener("scroll", () => {
+            if (window.scrollY > 200) {
+                if (!scrollBtn.classList.contains("show")) {
+                    scrollBtn.classList.add("show");
+                    scrollBtn.classList.remove("hide");
+                }
+            } else {
+                if (scrollBtn.classList.contains("show")) {
+                    scrollBtn.classList.remove("show");
+                    scrollBtn.classList.add("hide");
+                }
+            }
+        });
+
+        scrollBtn.addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+    </script>
+</body>
+
+</html>
