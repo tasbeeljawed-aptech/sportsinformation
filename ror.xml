@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:ror="http://rorweb.com/0.1/" >
+<channel>
+  <title>ROR Sitemap for https://tasbeeljawed-aptech.github.io/sportsinformation/</title>
+  <link>https://tasbeeljawed-aptech.github.io/sportsinformation/</link>
+
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/</link>
+     <title>SportsInfo - Premier Sports Information Hub</title>
+     <description>SportsInfo - Premier Sports Information Hub</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>0</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/index.html</link>
+     <title>SportsInfo - Premier Sports Information Hub</title>
+     <description>SportsInfo - Premier Sports Information Hub</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/sports.html</link>
+     <title>SportsInfo - Premier Sports Information Hub</title>
+     <description>SportsInfo - Premier Sports Information Hub</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/search.html</link>
+     <title>SportsInfo - Premier Search for Sports Information cards</title>
+     <description>SportsInfo - Premier Search for Sports Information cards</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/guestbook.html</link>
+     <title>SportsInfo — Guestbook</title>
+     <description>SportsInfo — Guestbook</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/about.html</link>
+     <title>SportsInfo — About Us</title>
+     <description>SportsInfo — About Us</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/contact.html</link>
+     <title>SportsInfo — Contact</title>
+     <description>SportsInfo — Contact</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+<item>
+     <link>https://tasbeeljawed-aptech.github.io/sportsinformation/news.html</link>
+     <title>SportsInfo — Latest Sports News</title>
+     <description>SportsInfo — Latest Sports News</description>
+     <ror:updatePeriod></ror:updatePeriod>
+     <ror:sortOrder>1</ror:sortOrder>
+     <ror:resourceOf>sitemap</ror:resourceOf>
+</item>
+</channel>
+</rss>
+  
